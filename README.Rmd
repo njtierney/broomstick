@@ -1,0 +1,39 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+# broomstick
+
+The goal of broomstick is to extend the [`broom`](https://github.com/tidyverse/broom) package to work with decision trees. It is currently borrowing heavily from the prototype package [`treezy`](https://github.com/njtierney/treezy), and will undergo much more development in the coming months.
+
+## Installation
+
+You can install broomstick from github with:
+
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("njtierney/broomstick")
+```
+
+## Example
+
+```{r example-rpart}
+library(rpart)
+library(broomstick)
+
+fit_rpart <- rpart(Kyphosis ~ Age + Number + Start, 
+                   data = kyphosis)
+
+tidy(fit_rpart)
+```
+
