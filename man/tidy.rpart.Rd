@@ -4,7 +4,7 @@
 \alias{tidy.rpart}
 \title{tidy up the model summary of rpart}
 \usage{
-tidy.rpart(x, ...)
+\method{tidy}{rpart}(x, ...)
 }
 \arguments{
 \item{x}{An `rpart` model}
