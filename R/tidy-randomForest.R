@@ -38,10 +38,7 @@ tidy.randomForest <- function(x, ...) {
 tidy.randomForest.formula <- tidy.randomForest
 
 tidy.randomForest.classification <- function(x, ...) {
-  imp_m <- as.data.frame(x[["importance"]])
-  if (ncol(imp_m) > 1)
-    names(imp_m) <- c(paste("class", head(names(imp_m), -2), sep = "_"), "MeanDecreaseAccuracy", "MeanDecreaseGini")
-  imp_m <- fix_data_frame(imp_m)
+  imp_m <- rf_term_column(x[["importance"]])
 
   # When run with importance = FALSE, randomForest() does not calculate
   # importanceSD. Issue a warning.
@@ -49,10 +46,28 @@ tidy.randomForest.classification <- function(x, ...) {
     warning("Only MeanDecreaseGini is available from this model. Run randomforest(..., importance = TRUE) for more detailed results")
     imp_m
   } else {
-    imp_sd <- as.data.frame(x[["importanceSD"]])
-    names(imp_sd) <- paste("sd", names(imp_sd), sep = "_")
+    imp_sd <- rf_term_column(x[["importanceSD"]])
 
-    dplyr::bind_cols(imp_m, imp_sd)
+    # Gather variable importances and standard deviations, then nest into a list column
+    gathered_imp <- imp_m %>%
+      tidyr::gather(
+        key = "class",
+        value = "classwise_MeanDecreaseAccuracy",
+        -term, -MeanDecreaseAccuracy, -MeanDecreaseGini)
+
+    gathered_imp_sd <- imp_sd %>%
+      dplyr::rename(MeanDecreaseAccuracy_sd = MeanDecreaseAccuracy) %>%
+      tidyr::gather(
+        key = "class",
+        value = "classwise_MeanDecreaseAccuracy_sd",
+        -term, -MeanDecreaseAccuracy_sd)
+
+    combined_imp <- dplyr::bind_cols(
+      gathered_imp,
+      gathered_imp_sd %>% dplyr::select(-term, -class)
+    ) %>%
+      tidyr::nest(class, classwise_MeanDecreaseAccuracy, classwise_MeanDecreaseAccuracy_sd,
+           .key = "classwise_importance")
   }
 }
 
@@ -69,19 +84,8 @@ tidy.randomForest.regression <- function(x, ...) {
 }
 
 tidy.randomForest.unsupervised <- function(x, ...) {
-  imp_m <- as.data.frame(x[["importance"]])
-  imp_m <- fix_data_frame(imp_m)
-  names(imp_m) <- rename_groups(names(imp_m))
-  imp_sd <- x[["importanceSD"]]
-
-  if (is.null(imp_sd)) {
-    warning("Only MeanDecreaseGini is available from this model. Run randomforest(..., importance = TRUE) for more detailed results")
-  } else {
-    imp_sd <- as.data.frame(imp_sd)
-    names(imp_sd) <- paste("sd", names(imp_sd), sep = "_")
-  }
-
-  dplyr::bind_cols(imp_m, imp_sd)
+  # This can be passed through directly to the classification method
+  tidy.randomForest.classification(x, ...)
 }
 
 # Augment ----
@@ -292,8 +296,24 @@ glance.randomForest.unsupervised <- function(x, ...) {
 
 # Internal helpers ----
 
-# Small helper function to append "group" before the numeric labels that
-# randomForest gives to the unsupervised clusters that it produces.
-rename_groups <- function(n) {
-  ifelse(grepl("^\\d", n), paste0("group_", n), n)
+# Retrieve names of terms used for randomForest
+rf_terms <- function(x) {
+  attr(x$terms, "term.labels")
+}
+
+# Retrieve predicted classes for randomForest. Returns an error if randomForest type does not equal "classification"
+rf_classes <- function(x) {
+  rf_type <- x[["type"]]
+  if (rf_type == "unsupervised") {
+    c("1", "2")
+  } else if (rf_type == "classification") {
+    levels(x$predicted)
+  } else {
+    stop("x is not a classification randomForest model.")
+  }
+}
+
+# Take importance matrix from a randomForest and return a tibble with "term" column
+rf_term_column <- function(x) {
+  tibble::rownames_to_column(as.data.frame(x), var = "term")
 }
