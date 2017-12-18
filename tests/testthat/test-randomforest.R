@@ -52,14 +52,14 @@ if (require(randomForest, quietly = TRUE)) {
         tdc <- tidy(crf)
         expect_equal(tdc[["term"]], crf_vars)
         expect_equal(colnames(tdc), tidy_names)
-        invisible(sapply(tdc[["classwise_importance"]], function(x) expect_equal(colnames(x), classwise_names)))
-        invisible(sapply(tdc[["classwise_importance"]], function(x) expect_equal(x[["class"]], crf_cats)))
+        expect_equal(colnames(tdc[["classwise_importance"]][[1]]), classwise_names)
+        expect_equal(tdc[["classwise_importance"]][[1]][["class"]], crf_cats)
 
         tdc_fix <- tidy(crf_fix)
         expect_equal(colnames(tdc_fix), tidy_names)
         expect_equal(tdc_fix[["term"]], crf_vars)
-        invisible(sapply(tdc_fix[["classwise_importance"]], function(x) expect_equal(colnames(x), classwise_names)))
-        invisible(sapply(tdc_fix[["classwise_importance"]], function(x) expect_equal(x[["class"]], crf_cats)))
+        expect_equal(colnames(tdc_fix[["classwise_importance"]][[1]]), classwise_names)
+        expect_equal(tdc_fix[["classwise_importance"]][[1]][["class"]], crf_cats)
 
         expect_warning(tdc_noimp <- tidy(crf_noimp), "Only MeanDecreaseGini")
         expect_equal(colnames(tdc_noimp), c("term", "MeanDecreaseGini"))
@@ -76,8 +76,8 @@ if (require(randomForest, quietly = TRUE)) {
         udr <- tidy(urf)
         expect_equal(udr[["term"]], urf_vars)
         expect_equal(colnames(udr), tidy_names)
-        invisible(sapply(udr[["classwise_importance"]], function(x) expect_equal(colnames(x), classwise_names)))
-        invisible(sapply(udr[["classwise_importance"]], function(x) expect_equal(x[["class"]], urf_cats)))
+        expect_equal(colnames(udr[["classwise_importance"]][[1]]), classwise_names)
+        expect_equal(udr[["classwise_importance"]][[1]][["class"]], urf_cats)
 
         expect_warning(udr_noimp <- tidy(urf_noimp))
         expect_equal(colnames(udr_noimp), c("term", "MeanDecreaseGini"))
@@ -121,24 +121,24 @@ if (require(randomForest, quietly = TRUE)) {
         auc <- augment(crf)
         expect_equal(colnames(auc), c(names(iris), augment_names_classification))
         expect_equal(nrow(auc), nrow(iris))
-        invisible(sapply(auc[[".votes"]], function(x) expect_equal(colnames(x), crf_cats)))
-        invisible(sapply(auc[[".local_var_imp"]], function(x) expect_equal(colnames(x), crf_vars)))
+        expect_equal(colnames(auc[[".votes"]][[1]]), crf_cats)
+        expect_equal(colnames(auc[[".local_var_imp"]][[1]]), crf_vars)
 
         auc_fix <- augment(crf_fix)
         expect_equal(colnames(auc_fix), c(names(iris), augment_names_classification))
         expect_equal(nrow(auc_fix), nrow(iris))
-        invisible(sapply(auc_fix[[".votes"]], function(x) expect_equal(colnames(x), crf_cats)))
-        invisible(sapply(auc_fix[[".local_var_imp"]], function(x) expect_equal(colnames(x), crf_vars)))
+        expect_equal(colnames(auc_fix[[".votes"]][[1]]), crf_cats)
+        expect_equal(colnames(auc_fix[[".local_var_imp"]][[1]]), crf_vars)
 
         expect_warning(auc_noimp <- augment(crf_noimp))
         expect_equal(colnames(auc_noimp), c(names(iris), augment_names_classification_noimp))
         expect_equal(nrow(auc_noimp), nrow(iris))
-        invisible(sapply(auc_noimp[[".votes"]], function(x) expect_equal(colnames(x), crf_cats)))
+        expect_equal(colnames(auc_noimp[[".votes"]][[1]]), crf_cats)
 
         aur <- augment(rrf)
         expect_equal(colnames(aur), c(names(airquality), augment_names_regression))
         expect_equal(nrow(aur), nrow(airquality))
-        invisible(sapply(auc_fix[[".local_var_imp"]], function(x) expect_equal(colnames(x), crf_vars)))
+        expect_equal(colnames(auc_fix[[".local_var_imp"]][[1]]), crf_vars)
 
 
         expect_warning(aur_noimp <- augment(rrf_noimp))
@@ -154,6 +154,6 @@ if (require(randomForest, quietly = TRUE)) {
         auu_noimp <- augment(urf_noimp)
         expect_equal(colnames(auu_noimp), c(names(iris), augment_names_classification_noimp))
         expect_equal(nrow(auu_noimp), nrow(iris))
-        invisible(sapply(auu_noimp[[".votes"]], function(x) expect_equal(colnames(x), c("1", "2"))))
+        expect_equal(colnames(auu_noimp[[".votes"]][[1]]), c("1", "2"))
     })
 }
