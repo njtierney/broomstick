@@ -3,6 +3,8 @@
 broomstick
 ==========
 
+[![Travis-CI Build Status](https://travis-ci.org/njtierney/broomstick.svg?branch=master)](https://travis-ci.org/njtierney/broomstick) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/njtierney/broomstick?branch=master&svg=true)](https://ci.appveyor.com/project/njtierney/broomstick)
+
 The goal of broomstick is to extend the [`broom`](https://github.com/tidyverse/broom) package to work with decision trees. It is currently borrowing heavily from the prototype package [`treezy`](https://github.com/njtierney/treezy), and will undergo much more development in the coming months.
 
 Installation
