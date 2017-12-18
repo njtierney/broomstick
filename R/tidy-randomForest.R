@@ -276,12 +276,16 @@ glance.randomForest.classification <- function(x, ...) {
     accuracy <- (tp + tn) / (tp + tn + fp + fn)
     f_measure <- 2 * ((precision * recall) / (precision + recall))
 
-    ml <- list(precision, recall, accuracy, f_measure)
-    names(ml) <- paste(l, c("precision", "recall", "accuracy", "f_measure"), sep = "_")
-    as.data.frame(ml)
+    tibble::tibble(
+      precision,
+      recall,
+      accuracy,
+      f_measure)
   }
 
-  dplyr::bind_cols(lapply(levels(actual), per_level))
+  purrr::set_names(levels(actual)) %>%
+    purrr::map_df(per_level, .id = "class") %>%
+    dplyr::select(class, dplyr::everything())
 }
 
 glance.randomForest.regression <- function(x, ...) {

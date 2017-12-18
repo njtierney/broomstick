@@ -86,28 +86,26 @@ if (require(randomForest, quietly = TRUE)) {
 
     # Glance ----
     test_that("glance works on randomForest models", {
-        measure_names <- c("precision", "recall", "accuracy", "f_measure")
-        glance_names <- c(unlist(lapply(crf_cats, function(x) paste(x, measure_names, sep = "_"))))
+        glance_names_classification <- c("class", "precision", "recall", "accuracy", "f_measure")
+        glance_names_regression <- c("mean_mse", "mean_rsq")
 
         glc <- glance(crf)
-        expect_equal(colnames(glc), glance_names)
-        expect_equal(nrow(glc), 1)
+        expect_equal(colnames(glc), glance_names_classification)
+        expect_equal(glc[["class"]], crf_cats)
 
         glc_fix <- glance(crf_fix)
-        expect_equal(colnames(glc_fix), glance_names)
-        expect_equal(nrow(glc_fix), 1)
+        expect_equal(colnames(glc_fix), glance_names_classification)
+        expect_equal(glc_fix[["class"]], crf_cats)
 
         glc_noimp <- glance(crf_noimp)
-        expect_equal(colnames(glc_fix), glance_names)
-        expect_equal(nrow(glc_fix), 1)
+        expect_equal(colnames(glc_fix), glance_names_classification)
+        expect_equal(glc_noimp[["class"]], crf_cats)
 
         glr <- glance(rrf)
-        expect_equal(colnames(glr), c("mean_mse", "mean_rsq"))
-        expect_equal(nrow(glr), 1)
+        expect_equal(colnames(glr), glance_names_regression)
 
         glr_noimp <- glance(rrf_noimp)
-        expect_equal(colnames(glr_noimp), c("mean_mse", "mean_rsq"))
-        expect_equal(nrow(glr_noimp), 1)
+        expect_equal(colnames(glr_noimp), glance_names_regression)
 
         expect_error(glu <- glance(urf))
         expect_error(glu_noimp <- glance(urf_noimp))
