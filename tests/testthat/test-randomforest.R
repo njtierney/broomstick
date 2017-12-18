@@ -113,34 +113,47 @@ if (require(randomForest, quietly = TRUE)) {
 
     # Augment ----
     test_that("augment works on randomForest models", {
+        augment_names <- c(".oob_times", ".fitted")
+        augment_names_classification_noimp <- c(augment_names, ".votes")
+        augment_names_classification <- c(augment_names_classification_noimp, ".local_var_imp")
+        augment_names_regression <- c(augment_names, ".local_var_imp")
+
         auc <- augment(crf)
-        expect_equal(colnames(auc), c(names(iris), ".oob_times", ".fitted", paste0(".votes_", crf_cats), paste0(".li_", crf_vars)))
+        expect_equal(colnames(auc), c(names(iris), augment_names_classification))
         expect_equal(nrow(auc), nrow(iris))
+        invisible(sapply(auc[[".votes"]], function(x) expect_equal(colnames(x), crf_cats)))
+        invisible(sapply(auc[[".local_var_imp"]], function(x) expect_equal(colnames(x), crf_vars)))
 
         auc_fix <- augment(crf_fix)
-        expect_equal(colnames(auc_fix), c(names(iris), ".oob_times", ".fitted", paste0(".votes_", crf_cats), paste0(".li_", crf_vars)))
+        expect_equal(colnames(auc_fix), c(names(iris), augment_names_classification))
         expect_equal(nrow(auc_fix), nrow(iris))
+        invisible(sapply(auc_fix[[".votes"]], function(x) expect_equal(colnames(x), crf_cats)))
+        invisible(sapply(auc_fix[[".local_var_imp"]], function(x) expect_equal(colnames(x), crf_vars)))
 
         expect_warning(auc_noimp <- augment(crf_noimp))
-        expect_equal(colnames(auc_noimp), c(names(iris), ".oob_times", ".fitted", paste0(".votes_", crf_cats)))
+        expect_equal(colnames(auc_noimp), c(names(iris), augment_names_classification_noimp))
         expect_equal(nrow(auc_noimp), nrow(iris))
+        invisible(sapply(auc_noimp[[".votes"]], function(x) expect_equal(colnames(x), crf_cats)))
 
         aur <- augment(rrf)
-        expect_equal(colnames(aur), c(names(airquality), ".oob_times", ".fitted", paste0(".li_", rrf_vars)))
+        expect_equal(colnames(aur), c(names(airquality), augment_names_regression))
         expect_equal(nrow(aur), nrow(airquality))
+        invisible(sapply(auc_fix[[".local_var_imp"]], function(x) expect_equal(colnames(x), crf_vars)))
+
 
         expect_warning(aur_noimp <- augment(rrf_noimp))
-        expect_equal(colnames(aur_noimp), c(names(airquality), ".oob_times", ".fitted"))
+        expect_equal(colnames(aur_noimp), c(names(airquality), augment_names))
         expect_equal(nrow(aur_noimp), nrow(airquality))
 
         # Currently, it's impossible to run randomForest unsuprvised with
         # localImp = TRUE - causes a segfault
         auu <- augment(urf)
-        expect_equal(colnames(auu), c(names(iris), ".oob_times", ".fitted", paste0(".votes_", 1:2)))
+        expect_equal(colnames(auu), c(names(iris), augment_names_classification_noimp))
         expect_equal(nrow(auu), nrow(iris))
 
         auu_noimp <- augment(urf_noimp)
-        expect_equal(colnames(auu_noimp), c(names(iris), ".oob_times", ".fitted", paste0(".votes_", 1:2)))
+        expect_equal(colnames(auu_noimp), c(names(iris), augment_names_classification_noimp))
         expect_equal(nrow(auu_noimp), nrow(iris))
+        invisible(sapply(auu_noimp[[".votes"]], function(x) expect_equal(colnames(x), c("1", "2"))))
     })
 }
