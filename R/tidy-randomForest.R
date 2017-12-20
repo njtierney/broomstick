@@ -62,7 +62,7 @@ tidy.randomForest.classification <- function(x, ...) {
         value = "classwise_MeanDecreaseAccuracy_sd",
         -term, -MeanDecreaseAccuracy_sd)
 
-    combined_imp <- dplyr::bind_cols(
+    dplyr::bind_cols(
       gathered_imp,
       gathered_imp_sd %>% dplyr::select(-term, -class)
     ) %>%
