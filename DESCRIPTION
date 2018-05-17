@@ -1,14 +1,20 @@
 Package: broomstick
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
+Title: Convert Decision Tree Objects into Tidy Data Frames
+Version: 0.1.0.9000
 Authors@R: c(
     person("Nicholas", "Tierney", email = "nicholas.tierney@gmail.com", role = c("aut", "cre")),
     person("Matthew", "Lincoln", email = "matthew.d.lincoln@gmail.com", role = "aut")
     )
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: Convert Decision Tree objects into tidy data frames, by using the
+    framework laid out by the package broom, this means that decision tree 
+    output can be easily reshaped, porocessed, and combined with tools like 
+    'dplyr', 'tidyr' and 'ggplot2'. Like the package broom, broomstick
+    provides three S3 generics: tidy, to summarise decision tree specific 
+    features - tidy returns the variable importance table; augment adds columns 
+    to the original data such as predictions and residuals; and glance, which
+    provides a one-row summary of model-level statistics.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: dplyr,
@@ -16,7 +22,7 @@ Imports: dplyr,
     magrittr,
     purrr,
     tidyr
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 6.0.1
 Depends: broom
 Suggests: testthat,
   randomForest
