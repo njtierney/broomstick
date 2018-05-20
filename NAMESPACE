@@ -2,6 +2,7 @@
 
 S3method(augment,randomForest)
 S3method(glance,randomForest)
+S3method(tidy,gbm)
 S3method(tidy,randomForest)
 S3method(tidy,rpart)
 export("%>%")

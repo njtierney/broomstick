@@ -21,7 +21,8 @@ Imports: dplyr,
     tibble,
     magrittr,
     purrr,
-    tidyr
+    tidyr,
+    gbm
 RoxygenNote: 6.0.1
 Depends: broom
 Suggests: testthat,
