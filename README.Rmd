@@ -30,7 +30,9 @@ You can install broomstick from github with:
 remotes::install_github("njtierney/broomstick")
 ```
 
-## Example
+## Examples
+
+## rpart
 
 ```{r example-rpart}
 library(rpart)
@@ -40,5 +42,16 @@ fit_rpart <- rpart(Kyphosis ~ Age + Number + Start,
                    data = kyphosis)
 
 tidy(fit_rpart)
+```
+
+
+## gbm (Boosted Regression Tree)
+
+```{r example-gbm}
+library(gbm)
+library(MASS)
+fit_gbm <- gbm(calories ~., data = UScereal)
+
+tidy(fit_gbm)
 ```
 
