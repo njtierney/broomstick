@@ -73,7 +73,7 @@ tidy.randomForest.classification <- function(x, ...) {
 
 tidy.randomForest.regression <- function(x, ...) {
   imp_m <- as.data.frame(x[["importance"]])
-  imp_m <- fix_data_frame(imp_m)
+  imp_m <- broom::fix_data_frame(imp_m)
   imp_sd <- x[["importanceSD"]]
 
   if (is.null(imp_sd))

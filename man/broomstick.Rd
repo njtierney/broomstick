@@ -4,7 +4,6 @@
 \name{broomstick}
 \alias{broomstick}
 \alias{broomstick-package}
-\alias{broomstick-package}
 \title{Convert Decision Tree Analysis Objects into Tidy Data Frames}
 \description{
 Convert decision tree analysis objects from R into tidy data

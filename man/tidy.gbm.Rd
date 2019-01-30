@@ -4,8 +4,8 @@
 \alias{tidy.gbm}
 \title{tidy up the model summary of gbm}
 \usage{
-\method{tidy}{gbm}(x, n_trees = x$n.trees, scale = FALSE, sort = TRUE,
-  normalise = TRUE, ...)
+\method{tidy}{gbm}(x, n_trees = x$n.trees, scale = FALSE,
+  sort = TRUE, normalise = TRUE, ...)
 }
 \arguments{
 \item{x}{A `gbm` model}
