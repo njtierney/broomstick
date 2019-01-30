@@ -1,3 +1,9 @@
+# broomstick 0.1.2.9000 (2019-01-30)
+
+## Minor Update
+
+* Used `generics` package to remove dependency on broom
+
 # broomstick 0.1.1.9000 (2018-05-20)
 
 ## Minor Update
