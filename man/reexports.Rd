@@ -4,6 +4,9 @@
 \name{reexports}
 \alias{reexports}
 \alias{\%>\%}
+\alias{tidy}
+\alias{glance}
+\alias{augment}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -11,6 +14,8 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
+  \item{generics}{\code{\link[generics]{tidy}}, \code{\link[generics]{glance}}, \code{\link[generics]{augment}}}
+
   \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
 }}
 

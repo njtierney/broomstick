@@ -17,14 +17,19 @@ Description: Convert Decision Tree objects into tidy data frames, by using the
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: dplyr,
+Imports: 
+    dplyr,
     tibble,
     magrittr,
     purrr,
     tidyr,
-    gbm
-RoxygenNote: 6.0.1
-Depends: broom
-Suggests: testthat,
-  randomForest,
-    MASS
+    generics,
+    rlang,
+    broom
+RoxygenNote: 6.1.1
+Suggests: 
+    gbm,
+    testthat,
+    randomForest,
+    MASS,
+    rpart

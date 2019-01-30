@@ -15,3 +15,17 @@
 #' @docType package
 #' @aliases broomstick broomstick-package
 NULL
+
+if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
+globalVariables(c("rowname",
+                  ".oob_times",
+                  ".fitted",
+                  "term",
+                  "MeanDecreaseAccuracy",
+                  "MeanDecreaseGini",
+                  "MeanDecreaseAccuracy_sd",
+                  "classwise_MeanDecreaseAccuracy",
+                  "classwise_MeanDecreaseAccuracy_sd",
+                  "variable",
+                  "importance"
+))
