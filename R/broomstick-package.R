@@ -11,9 +11,11 @@
 #' @importFrom stats AIC coef confint fitted logLik model.frame na.omit
 #' @importFrom stats predict qnorm qt residuals setNames var
 #' @importFrom utils head
+#' @importFrom stats na.pass
 #'
 #' @docType package
 #' @aliases broomstick broomstick-package
+#'
 NULL
 
 if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
