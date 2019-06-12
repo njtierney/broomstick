@@ -8,7 +8,7 @@
   sort = TRUE, normalise = TRUE, ...)
 }
 \arguments{
-\item{x}{A `gbm` model}
+\item{x}{A \code{gbm} model}
 
 \item{n_trees}{integer. (optional) Number of trees to use for computing
 relative importance. Default is the number of trees in x$n.trees. If

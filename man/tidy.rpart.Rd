@@ -7,7 +7,7 @@
 \method{tidy}{rpart}(x, ...)
 }
 \arguments{
-\item{x}{An `rpart` model}
+\item{x}{An \code{rpart} model}
 
 \item{...}{extra functions or arguments}
 }
