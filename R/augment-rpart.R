@@ -1,5 +1,4 @@
-# Augment ----
-
+#' Augment your model object
 #' @param x rpart model
 #' @param data data.frame from the model
 #' @param newdata new data to use for predictions, residuals, etc.
@@ -40,6 +39,6 @@ augment.rpart <- function(x, data = NULL, newdata = NULL, ...) {
     data$.resid <- data$.fitted - x$y
   }
 
-  data
+  return(data)
 
 }
