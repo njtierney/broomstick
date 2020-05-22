@@ -1,3 +1,11 @@
+# broomstick 0.1.3.9000 (2019-06-12)
+
+## Minor Update
+
+* draft `augment` for `rpart`.
+* `augment` now gives predictions for different data (but not residuals, yet!)
+* use markdown roxygen
+
 # broomstick 0.1.2.9000 (2019-01-30)
 
 ## Minor Update

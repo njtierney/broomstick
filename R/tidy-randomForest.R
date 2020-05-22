@@ -7,24 +7,24 @@
 #' values/classifications and error, and construct a one-row glance of the
 #' model's statistics.
 #'
-#' @return All tidying methods return a \code{data.frame} without rownames. The
+#' @return All tidying methods return a `data.frame` without rownames. The
 #'   structure depends on the method chosen.
 #'
 #' @name rf_tidiers
 #'
 #' @param x randomForest object
-#' @param data Model data for use by \code{\link{augment.randomForest}}.
+#' @param data Model data for use by [augment.randomForest()].
 #' @param ... Additional arguments (ignored)
 NULL
 
 #' @rdname rf_tidiers
 #'
-#' @return \code{tidy.randomForest} returns one row for each model term, with the following columns:
+#' @return `tidy.randomForest` returns one row for each model term, with the following columns:
 #'   \item{term}{The term in the randomForest model}
-#'   \item{MeanDecreaseAccuracy}{A measure of variable importance. See \code{\link[randomForest]{randomForest}} for more information. Only present if the model was created with \code{importance = TRUE}}
-#'   \item{MeanDecreaseGini}{A measure of variable importance. See \code{\link[randomForest]{randomForest}} for more information.}
-#'   \item{MeanDecreaseAccuracy_sd}{Standard deviation of \code{MeanDecreaseAccuracy}. See \code{\link[randomForest]{randomForest}} for more information. Only present if the model was created with \code{importance = TRUE}}
-#'   \item{classwise_importance}{Classwise variable importance for each term, stored as data frames in a nested list-column, with one row per class. Only present if the model was created with \code{importance = TRUE}}
+#'   \item{MeanDecreaseAccuracy}{A measure of variable importance. See [randomForest::randomForest()] for more information. Only present if the model was created with `importance = TRUE`}
+#'   \item{MeanDecreaseGini}{A measure of variable importance. See [randomForest::randomForest()] for more information.}
+#'   \item{MeanDecreaseAccuracy_sd}{Standard deviation of `MeanDecreaseAccuracy`. See [randomForest::randomForest()] for more information. Only present if the model was created with `importance = TRUE`}
+#'   \item{classwise_importance}{Classwise variable importance for each term, stored as data frames in a nested list-column, with one row per class. Only present if the model was created with `importance = TRUE`}
 #'
 #' @export
 tidy.randomForest <- function(x, ...) {
@@ -92,12 +92,12 @@ tidy.randomForest.unsupervised <- function(x, ...) {
 
 #' @rdname rf_tidiers
 #'
-#' @return \code{augment.randomForest} returns the original data with additional columns:
-#'   \item{.oob_times}{The number of trees for which the given case was "out of bag". See \code{\link[randomForest]{randomForest}} for more details.}
+#' @return `augment.randomForest` returns the original data with additional columns:
+#'   \item{.oob_times}{The number of trees for which the given case was "out of bag". See [randomForest::randomForest()] for more details.}
 #'   \item{.fitted}{The fitted value or class.}
-#'   \code{augment} returns additional columns for classification and usupervised trees:
+#'   `augment` returns additional columns for classification and usupervised trees:
 #'   \item{.votes}{For each case, the voting results, with one column per class.}
-#'   \item{.local_var_imp}{The casewise variable importance, stored as data frames in a nested list-column, with one row per variable in the model. Only present if the model was created with \code{importance = TRUE}}
+#'   \item{.local_var_imp}{The casewise variable importance, stored as data frames in a nested list-column, with one row per variable in the model. Only present if the model was created with `importance = TRUE`}
 #'
 #' @export
 augment.randomForest <- function(x, data = NULL, ...) {
@@ -226,10 +226,10 @@ augment.randomForest <- augment.randomForest.formula
 
 #' @rdname rf_tidiers
 #'
-#' @return \code{glance.randomForest} returns a data.frame with the following
+#' @return `glance.randomForest` returns a data.frame with the following
 #'   columns for regression trees:
 #'   \item{mse}{The average mean squared error across all trees.}
-#'   \item{rsq}{The average pesudo-R-squared across all trees. See \code{\link[randomForest]{randomForest}} for more information.}
+#'   \item{rsq}{The average pesudo-R-squared across all trees. See [randomForest::randomForest()] for more information.}
 #'   For classification trees: one row per class, with the following columns:
 #'   \item{precision}{}
 #'   \item{recall}{}

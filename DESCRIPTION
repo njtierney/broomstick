@@ -1,7 +1,7 @@
 Package: broomstick
 Type: Package
 Title: Convert Decision Tree Objects into Tidy Data Frames
-Version: 0.1.2.9000
+Version: 0.1.2.9200
 Authors@R: c(
     person("Nicholas", "Tierney", email = "nicholas.tierney@gmail.com", role = c("aut", "cre")),
     person("Matthew", "Lincoln", email = "matthew.d.lincoln@gmail.com", role = "aut")
@@ -26,10 +26,11 @@ Imports:
     generics,
     rlang,
     broom
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Suggests: 
     gbm,
     testthat,
     randomForest,
     MASS,
     rpart
+Roxygen: list(markdown = TRUE)

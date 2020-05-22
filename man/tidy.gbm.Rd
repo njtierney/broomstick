@@ -4,11 +4,10 @@
 \alias{tidy.gbm}
 \title{tidy up the model summary of gbm}
 \usage{
-\method{tidy}{gbm}(x, n_trees = x$n.trees, scale = FALSE,
-  sort = TRUE, normalise = TRUE, ...)
+\method{tidy}{gbm}(x, n_trees = x$n.trees, scale = FALSE, sort = TRUE, normalise = TRUE, ...)
 }
 \arguments{
-\item{x}{A `gbm` model}
+\item{x}{A \code{gbm} model}
 
 \item{n_trees}{integer. (optional) Number of trees to use for computing
 relative importance. Default is the number of trees in x$n.trees. If
