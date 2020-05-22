@@ -39,6 +39,6 @@ augment.rpart <- function(x, data = NULL, newdata = NULL, ...) {
     data$.resid <- data$.fitted - x$y
   }
 
-  return(data)
+  return(tibble::as_tibble(data))
 
 }
