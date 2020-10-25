@@ -72,16 +72,16 @@
 <div id="broomstick" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#broomstick" class="anchor"></a>broomstick</h1></div>
+<!-- badges: start -->
 
 <p>Convert decision tree objects into tidy data frames with <code>broomstick</code>.</p>
-<p>The goal of broomstick is to extend the <a href="https://github.com/tidyverse/broom"><code>broom</code></a> package to work with decision trees. It is currently borrowing heavily from the prototype package <a href="https://github.com/njtierney/treezy"><code>treezy</code></a>, and will undergo much more development in the coming months.</p>
+<p>The goal of broomstick is to extend the <a href="https://github.com/tidyverse/broom"><code>broom</code></a> package to work with decision trees. It is currently borrowing heavily from the prototype package <a href="https://github.com/njtierney/treezy"><code>treezy</code></a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install broomstick from github with:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="co"># install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"njtierney/broomstick"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># install.packages("remotes")</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"njtierney/broomstick"</span>)</span></code></pre></div>
 </div>
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
@@ -90,55 +90,241 @@
 <div id="rpart" class="section level2">
 <h2 class="hasAnchor">
 <a href="#rpart" class="anchor"></a>rpart</h2>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bethatkinson/rpart">rpart</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">broomstick</span><span class="op">)</span>
-<span class="co">#&gt; Loading required package: broom</span>
-
-<span class="va">fit_rpart</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">Kyphosis</span> <span class="op">~</span> <span class="va">Age</span> <span class="op">+</span> <span class="va">Number</span> <span class="op">+</span> <span class="va">Start</span>, 
-                   data <span class="op">=</span> <span class="va">kyphosis</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html">tidy</a></span><span class="op">(</span><span class="va">fit_rpart</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 3 x 2</span>
-<span class="co">#&gt;   variable importance</span>
-<span class="co">#&gt;   &lt;fct&gt;         &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 Start          8.20</span>
-<span class="co">#&gt; 2 Age            3.10</span>
-<span class="co">#&gt; 3 Number         1.52</span></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(rpart)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">library</span>(broomstick)</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a>fit_rpart &lt;-<span class="st"> </span><span class="kw">rpart</span>(Kyphosis <span class="op">~</span><span class="st"> </span>Age <span class="op">+</span><span class="st"> </span>Number <span class="op">+</span><span class="st"> </span>Start, </span>
+<span id="cb2-5"><a href="#cb2-5"></a>                   <span class="dt">data =</span> kyphosis)</span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="kw">tidy</span>(fit_rpart)</span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt; # A tibble: 3 x 2</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co">#&gt;   variable importance</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="co">#&gt;   &lt;chr&gt;         &lt;dbl&gt;</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="co">#&gt; 1 Start          8.20</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="co">#&gt; 2 Age            3.10</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="co">#&gt; 3 Number         1.52</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="kw">augment</span>(fit_rpart)</span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt; # A tibble: 81 x 6</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="co">#&gt;    Kyphosis   Age Number Start .fitted[,"absen… [,"present"] .resid[,"absent…</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="co">#&gt;    &lt;fct&gt;    &lt;int&gt;  &lt;int&gt; &lt;int&gt;            &lt;dbl&gt;        &lt;dbl&gt;            &lt;dbl&gt;</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a><span class="co">#&gt;  1 absent      71      3     5            0.421        0.579           -0.579</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a><span class="co">#&gt;  2 absent     158      3    14            0.857        0.143           -0.143</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a><span class="co">#&gt;  3 present    128      4     5            0.421        0.579           -1.58 </span></span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="co">#&gt;  4 absent       2      5     1            0.421        0.579           -0.579</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a><span class="co">#&gt;  5 absent       1      4    15            1            0                0    </span></span>
+<span id="cb2-23"><a href="#cb2-23"></a><span class="co">#&gt;  6 absent       1      2    16            1            0                0    </span></span>
+<span id="cb2-24"><a href="#cb2-24"></a><span class="co">#&gt;  7 absent      61      2    17            1            0                0    </span></span>
+<span id="cb2-25"><a href="#cb2-25"></a><span class="co">#&gt;  8 absent      37      3    16            1            0                0    </span></span>
+<span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt;  9 absent     113      2    16            1            0                0    </span></span>
+<span id="cb2-27"><a href="#cb2-27"></a><span class="co">#&gt; 10 present     59      6    12            0.429        0.571           -1.57 </span></span>
+<span id="cb2-28"><a href="#cb2-28"></a><span class="co">#&gt; # … with 71 more rows, and 1 more variable: [,"present"] &lt;dbl&gt;</span></span></code></pre></div>
 </div>
 <div id="gbm-boosted-regression-tree" class="section level2">
 <h2 class="hasAnchor">
 <a href="#gbm-boosted-regression-tree" class="anchor"></a>gbm (Boosted Regression Tree)</h2>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gbm-developers/gbm">gbm</a></span><span class="op">)</span>
-<span class="co">#&gt; Loading required package: survival</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'survival'</span>
-<span class="co">#&gt; The following object is masked from 'package:rpart':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     solder</span>
-<span class="co">#&gt; Loading required package: lattice</span>
-<span class="co">#&gt; Loading required package: splines</span>
-<span class="co">#&gt; Loading required package: parallel</span>
-<span class="co">#&gt; Loaded gbm 2.1.3</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span>
-<span class="va">fit_gbm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gbm/man/gbm.html">gbm</a></span><span class="op">(</span><span class="va">calories</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">UScereal</span><span class="op">)</span>
-<span class="co">#&gt; Distribution not specified, assuming gaussian ...</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/generics/man/tidy.html">tidy</a></span><span class="op">(</span><span class="va">fit_gbm</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 10 x 2</span>
-<span class="co">#&gt;    variable  importance</span>
-<span class="co">#&gt;    &lt;chr&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 potassium      62.5 </span>
-<span class="co">#&gt;  2 fat            15.8 </span>
-<span class="co">#&gt;  3 carbo           7.27</span>
-<span class="co">#&gt;  4 fibre           5.26</span>
-<span class="co">#&gt;  5 protein         5.23</span>
-<span class="co">#&gt;  6 sugars          2.30</span>
-<span class="co">#&gt;  7 sodium          1.69</span>
-<span class="co">#&gt;  8 vitamins        0   </span>
-<span class="co">#&gt;  9 shelf           0   </span>
-<span class="co">#&gt; 10 mfr             0</span></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">library</span>(gbm)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; Loaded gbm 2.1.8</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">library</span>(MASS)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>fit_gbm &lt;-<span class="st"> </span><span class="kw">gbm</span>(calories <span class="op">~</span>., <span class="dt">data =</span> UScereal)</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt; Distribution not specified, assuming gaussian ...</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="kw">tidy</span>(fit_gbm)</span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="co">#&gt; # A tibble: 10 x 2</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="co">#&gt;    variable importance</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="co">#&gt;    &lt;chr&gt;         &lt;dbl&gt;</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="co">#&gt;  1 1            30.7  </span></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="co">#&gt;  2 2            23.5  </span></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="co">#&gt;  3 3            14.3  </span></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="co">#&gt;  4 4            11.5  </span></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="co">#&gt;  5 5             8.14 </span></span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="co">#&gt;  6 6             6.75 </span></span>
+<span id="cb3-17"><a href="#cb3-17"></a><span class="co">#&gt;  7 7             2.96 </span></span>
+<span id="cb3-18"><a href="#cb3-18"></a><span class="co">#&gt;  8 8             1.95 </span></span>
+<span id="cb3-19"><a href="#cb3-19"></a><span class="co">#&gt;  9 9             0.198</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a><span class="co">#&gt; 10 10            0</span></span></code></pre></div>
+</div>
+<div id="random-forest" class="section level2">
+<h2 class="hasAnchor">
+<a href="#random-forest" class="anchor"></a>random forest</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">library</span>(randomForest)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt; randomForest 4.6-14</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt; Type rfNews() to see new features/changes/bug fixes.</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>ozone_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(Ozone <span class="op">~</span><span class="st"> </span>., </span>
+<span id="cb4-5"><a href="#cb4-5"></a>                         <span class="dt">data =</span> airquality, </span>
+<span id="cb4-6"><a href="#cb4-6"></a>                         <span class="dt">importance =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb4-7"><a href="#cb4-7"></a>                         <span class="dt">na.action =</span> na.omit)</span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="kw">tidy</span>(ozone_rf)</span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt; Warning: This function is deprecated as of broom 0.7.0 and will be removed from</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt; a future release. Please see tibble::as_tibble().</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt; # A tibble: 5 x 4</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="co">#&gt;   term    X.IncMSE IncNodePurity imp_sd</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="co">#&gt; 1 Solar.R    151.         18103.   11.0</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="co">#&gt; 2 Wind       326.         29153.   17.6</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="co">#&gt; 3 Temp       485.         35513.   18.6</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="co">#&gt; 4 Month      107.         10803.   10.4</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="co">#&gt; 5 Day         62.5        16332.   10.6</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="kw">glance</span>(ozone_rf)</span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="co">#&gt;   mean_mse  mean_rsq</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a><span class="co">#&gt; 1 342.6329 0.6877532</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a><span class="kw">augment</span>(ozone_rf)</span>
+<span id="cb4-23"><a href="#cb4-23"></a><span class="co">#&gt; Warning in augment.randomForest.method(x, data, ...): casewise importance</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a><span class="co">#&gt; measures are not available. Run randomForest(..., localImp = TRUE) for more</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a><span class="co">#&gt; detailed results.</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a><span class="co">#&gt;     Ozone Solar.R Wind Temp Month Day .oob_times   .fitted</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a><span class="co">#&gt; 1      41     190  7.4   67     5   1        188  42.25838</span></span>
+<span id="cb4-28"><a href="#cb4-28"></a><span class="co">#&gt; 2      36     118  8.0   72     5   2        197  26.11229</span></span>
+<span id="cb4-29"><a href="#cb4-29"></a><span class="co">#&gt; 3      12     149 12.6   74     5   3        197  24.96252</span></span>
+<span id="cb4-30"><a href="#cb4-30"></a><span class="co">#&gt; 4      18     313 11.5   62     5   4        168  24.20249</span></span>
+<span id="cb4-31"><a href="#cb4-31"></a><span class="co">#&gt; 5      NA      NA 14.3   56     5   5         NA        NA</span></span>
+<span id="cb4-32"><a href="#cb4-32"></a><span class="co">#&gt; 6      28      NA 14.9   66     5   6         NA        NA</span></span>
+<span id="cb4-33"><a href="#cb4-33"></a><span class="co">#&gt; 7      23     299  8.6   65     5   7        180  29.26588</span></span>
+<span id="cb4-34"><a href="#cb4-34"></a><span class="co">#&gt; 8      19      99 13.8   59     5   8        181  18.78945</span></span>
+<span id="cb4-35"><a href="#cb4-35"></a><span class="co">#&gt; 9       8      19 20.1   61     5   9        184  14.48941</span></span>
+<span id="cb4-36"><a href="#cb4-36"></a><span class="co">#&gt; 10     NA     194  8.6   69     5  10         NA        NA</span></span>
+<span id="cb4-37"><a href="#cb4-37"></a><span class="co">#&gt; 11      7      NA  6.9   74     5  11         NA        NA</span></span>
+<span id="cb4-38"><a href="#cb4-38"></a><span class="co">#&gt; 12     16     256  9.7   69     5  12        160  20.25724</span></span>
+<span id="cb4-39"><a href="#cb4-39"></a><span class="co">#&gt; 13     11     290  9.2   66     5  13        164  22.67090</span></span>
+<span id="cb4-40"><a href="#cb4-40"></a><span class="co">#&gt; 14     14     274 10.9   68     5  14        174  22.40194</span></span>
+<span id="cb4-41"><a href="#cb4-41"></a><span class="co">#&gt; 15     18      65 13.2   58     5  15        199  13.99352</span></span>
+<span id="cb4-42"><a href="#cb4-42"></a><span class="co">#&gt; 16     14     334 11.5   64     5  16        202  23.91045</span></span>
+<span id="cb4-43"><a href="#cb4-43"></a><span class="co">#&gt; 17     34     307 12.0   66     5  17        185  19.91413</span></span>
+<span id="cb4-44"><a href="#cb4-44"></a><span class="co">#&gt; 18      6      78 18.4   57     5  18        194  18.64684</span></span>
+<span id="cb4-45"><a href="#cb4-45"></a><span class="co">#&gt; 19     30     322 11.5   68     5  19        175  19.05428</span></span>
+<span id="cb4-46"><a href="#cb4-46"></a><span class="co">#&gt; 20     11      44  9.7   62     5  20        175  11.79332</span></span>
+<span id="cb4-47"><a href="#cb4-47"></a><span class="co">#&gt; 21      1       8  9.7   59     5  21        183  13.96870</span></span>
+<span id="cb4-48"><a href="#cb4-48"></a><span class="co">#&gt; 22     11     320 16.6   73     5  22        174  24.16417</span></span>
+<span id="cb4-49"><a href="#cb4-49"></a><span class="co">#&gt; 23      4      25  9.7   61     5  23        190  14.33131</span></span>
+<span id="cb4-50"><a href="#cb4-50"></a><span class="co">#&gt; 24     32      92 12.0   61     5  24        176  18.18554</span></span>
+<span id="cb4-51"><a href="#cb4-51"></a><span class="co">#&gt; 25     NA      66 16.6   57     5  25         NA        NA</span></span>
+<span id="cb4-52"><a href="#cb4-52"></a><span class="co">#&gt; 26     NA     266 14.9   58     5  26         NA        NA</span></span>
+<span id="cb4-53"><a href="#cb4-53"></a><span class="co">#&gt; 27     NA      NA  8.0   57     5  27         NA        NA</span></span>
+<span id="cb4-54"><a href="#cb4-54"></a><span class="co">#&gt; 28     23      13 12.0   67     5  28        180  20.88715</span></span>
+<span id="cb4-55"><a href="#cb4-55"></a><span class="co">#&gt; 29     45     252 14.9   81     5  29        189  46.32726</span></span>
+<span id="cb4-56"><a href="#cb4-56"></a><span class="co">#&gt; 30    115     223  5.7   79     5  30        191  55.56009</span></span>
+<span id="cb4-57"><a href="#cb4-57"></a><span class="co">#&gt; 31     37     279  7.4   76     5  31        186  46.92523</span></span>
+<span id="cb4-58"><a href="#cb4-58"></a><span class="co">#&gt; 32     NA     286  8.6   78     6   1         NA        NA</span></span>
+<span id="cb4-59"><a href="#cb4-59"></a><span class="co">#&gt; 33     NA     287  9.7   74     6   2         NA        NA</span></span>
+<span id="cb4-60"><a href="#cb4-60"></a><span class="co">#&gt; 34     NA     242 16.1   67     6   3         NA        NA</span></span>
+<span id="cb4-61"><a href="#cb4-61"></a><span class="co">#&gt; 35     NA     186  9.2   84     6   4         NA        NA</span></span>
+<span id="cb4-62"><a href="#cb4-62"></a><span class="co">#&gt; 36     NA     220  8.6   85     6   5         NA        NA</span></span>
+<span id="cb4-63"><a href="#cb4-63"></a><span class="co">#&gt; 37     NA     264 14.3   79     6   6         NA        NA</span></span>
+<span id="cb4-64"><a href="#cb4-64"></a><span class="co">#&gt; 38     29     127  9.7   82     6   7        188  27.59685</span></span>
+<span id="cb4-65"><a href="#cb4-65"></a><span class="co">#&gt; 39     NA     273  6.9   87     6   8         NA        NA</span></span>
+<span id="cb4-66"><a href="#cb4-66"></a><span class="co">#&gt; 40     71     291 13.8   90     6   9        191  49.68501</span></span>
+<span id="cb4-67"><a href="#cb4-67"></a><span class="co">#&gt; 41     39     323 11.5   87     6  10        168  54.05047</span></span>
+<span id="cb4-68"><a href="#cb4-68"></a><span class="co">#&gt; 42     NA     259 10.9   93     6  11         NA        NA</span></span>
+<span id="cb4-69"><a href="#cb4-69"></a><span class="co">#&gt; 43     NA     250  9.2   92     6  12         NA        NA</span></span>
+<span id="cb4-70"><a href="#cb4-70"></a><span class="co">#&gt; 44     23     148  8.0   82     6  13        188  34.53176</span></span>
+<span id="cb4-71"><a href="#cb4-71"></a><span class="co">#&gt; 45     NA     332 13.8   80     6  14         NA        NA</span></span>
+<span id="cb4-72"><a href="#cb4-72"></a><span class="co">#&gt; 46     NA     322 11.5   79     6  15         NA        NA</span></span>
+<span id="cb4-73"><a href="#cb4-73"></a><span class="co">#&gt; 47     21     191 14.9   77     6  16        179  26.24771</span></span>
+<span id="cb4-74"><a href="#cb4-74"></a><span class="co">#&gt; 48     37     284 20.7   72     6  17        171  22.30556</span></span>
+<span id="cb4-75"><a href="#cb4-75"></a><span class="co">#&gt; 49     20      37  9.2   65     6  18        191  15.30853</span></span>
+<span id="cb4-76"><a href="#cb4-76"></a><span class="co">#&gt; 50     12     120 11.5   73     6  19        170  22.07452</span></span>
+<span id="cb4-77"><a href="#cb4-77"></a><span class="co">#&gt; 51     13     137 10.3   76     6  20        183  22.79000</span></span>
+<span id="cb4-78"><a href="#cb4-78"></a><span class="co">#&gt; 52     NA     150  6.3   77     6  21         NA        NA</span></span>
+<span id="cb4-79"><a href="#cb4-79"></a><span class="co">#&gt; 53     NA      59  1.7   76     6  22         NA        NA</span></span>
+<span id="cb4-80"><a href="#cb4-80"></a><span class="co">#&gt; 54     NA      91  4.6   76     6  23         NA        NA</span></span>
+<span id="cb4-81"><a href="#cb4-81"></a><span class="co">#&gt; 55     NA     250  6.3   76     6  24         NA        NA</span></span>
+<span id="cb4-82"><a href="#cb4-82"></a><span class="co">#&gt; 56     NA     135  8.0   75     6  25         NA        NA</span></span>
+<span id="cb4-83"><a href="#cb4-83"></a><span class="co">#&gt; 57     NA     127  8.0   78     6  26         NA        NA</span></span>
+<span id="cb4-84"><a href="#cb4-84"></a><span class="co">#&gt; 58     NA      47 10.3   73     6  27         NA        NA</span></span>
+<span id="cb4-85"><a href="#cb4-85"></a><span class="co">#&gt; 59     NA      98 11.5   80     6  28         NA        NA</span></span>
+<span id="cb4-86"><a href="#cb4-86"></a><span class="co">#&gt; 60     NA      31 14.9   77     6  29         NA        NA</span></span>
+<span id="cb4-87"><a href="#cb4-87"></a><span class="co">#&gt; 61     NA     138  8.0   83     6  30         NA        NA</span></span>
+<span id="cb4-88"><a href="#cb4-88"></a><span class="co">#&gt; 62    135     269  4.1   84     7   1        184  71.89886</span></span>
+<span id="cb4-89"><a href="#cb4-89"></a><span class="co">#&gt; 63     49     248  9.2   85     7   2        167  64.37778</span></span>
+<span id="cb4-90"><a href="#cb4-90"></a><span class="co">#&gt; 64     32     236  9.2   81     7   3        187  45.91065</span></span>
+<span id="cb4-91"><a href="#cb4-91"></a><span class="co">#&gt; 65     NA     101 10.9   84     7   4         NA        NA</span></span>
+<span id="cb4-92"><a href="#cb4-92"></a><span class="co">#&gt; 66     64     175  4.6   83     7   5        174  75.24531</span></span>
+<span id="cb4-93"><a href="#cb4-93"></a><span class="co">#&gt; 67     40     314 10.9   83     7   6        183  49.88416</span></span>
+<span id="cb4-94"><a href="#cb4-94"></a><span class="co">#&gt; 68     77     276  5.1   88     7   7        200  85.00543</span></span>
+<span id="cb4-95"><a href="#cb4-95"></a><span class="co">#&gt; 69     97     267  6.3   92     7   8        173  86.20607</span></span>
+<span id="cb4-96"><a href="#cb4-96"></a><span class="co">#&gt; 70     97     272  5.7   92     7   9        173  87.64815</span></span>
+<span id="cb4-97"><a href="#cb4-97"></a><span class="co">#&gt; 71     85     175  7.4   89     7  10        153  73.97870</span></span>
+<span id="cb4-98"><a href="#cb4-98"></a><span class="co">#&gt; 72     NA     139  8.6   82     7  11         NA        NA</span></span>
+<span id="cb4-99"><a href="#cb4-99"></a><span class="co">#&gt; 73     10     264 14.3   73     7  12        178  28.75746</span></span>
+<span id="cb4-100"><a href="#cb4-100"></a><span class="co">#&gt; 74     27     175 14.9   81     7  13        164  39.57709</span></span>
+<span id="cb4-101"><a href="#cb4-101"></a><span class="co">#&gt; 75     NA     291 14.9   91     7  14         NA        NA</span></span>
+<span id="cb4-102"><a href="#cb4-102"></a><span class="co">#&gt; 76      7      48 14.3   80     7  15        187  25.77671</span></span>
+<span id="cb4-103"><a href="#cb4-103"></a><span class="co">#&gt; 77     48     260  6.9   81     7  16        184  46.63660</span></span>
+<span id="cb4-104"><a href="#cb4-104"></a><span class="co">#&gt; 78     35     274 10.3   82     7  17        194  37.74192</span></span>
+<span id="cb4-105"><a href="#cb4-105"></a><span class="co">#&gt; 79     61     285  6.3   84     7  18        192  69.86593</span></span>
+<span id="cb4-106"><a href="#cb4-106"></a><span class="co">#&gt; 80     79     187  5.1   87     7  19        184  73.84940</span></span>
+<span id="cb4-107"><a href="#cb4-107"></a><span class="co">#&gt; 81     63     220 11.5   85     7  20        195  51.65887</span></span>
+<span id="cb4-108"><a href="#cb4-108"></a><span class="co">#&gt; 82     16       7  6.9   74     7  21        187  27.20911</span></span>
+<span id="cb4-109"><a href="#cb4-109"></a><span class="co">#&gt; 83     NA     258  9.7   81     7  22         NA        NA</span></span>
+<span id="cb4-110"><a href="#cb4-110"></a><span class="co">#&gt; 84     NA     295 11.5   82     7  23         NA        NA</span></span>
+<span id="cb4-111"><a href="#cb4-111"></a><span class="co">#&gt; 85     80     294  8.6   86     7  24        197  58.13895</span></span>
+<span id="cb4-112"><a href="#cb4-112"></a><span class="co">#&gt; 86    108     223  8.0   85     7  25        177  72.65444</span></span>
+<span id="cb4-113"><a href="#cb4-113"></a><span class="co">#&gt; 87     20      81  8.6   82     7  26        181  45.41705</span></span>
+<span id="cb4-114"><a href="#cb4-114"></a><span class="co">#&gt; 88     52      82 12.0   86     7  27        176  43.16430</span></span>
+<span id="cb4-115"><a href="#cb4-115"></a><span class="co">#&gt; 89     82     213  7.4   88     7  28        178  73.00805</span></span>
+<span id="cb4-116"><a href="#cb4-116"></a><span class="co">#&gt; 90     50     275  7.4   86     7  29        190  73.45676</span></span>
+<span id="cb4-117"><a href="#cb4-117"></a><span class="co">#&gt; 91     64     253  7.4   83     7  30        188  62.06175</span></span>
+<span id="cb4-118"><a href="#cb4-118"></a><span class="co">#&gt; 92     59     254  9.2   81     7  31        169  52.61721</span></span>
+<span id="cb4-119"><a href="#cb4-119"></a><span class="co">#&gt; 93     39      83  6.9   81     8   1        171  40.68605</span></span>
+<span id="cb4-120"><a href="#cb4-120"></a><span class="co">#&gt; 94      9      24 13.8   81     8   2        181  27.34251</span></span>
+<span id="cb4-121"><a href="#cb4-121"></a><span class="co">#&gt; 95     16      77  7.4   82     8   3        184  37.33898</span></span>
+<span id="cb4-122"><a href="#cb4-122"></a><span class="co">#&gt; 96     78      NA  6.9   86     8   4         NA        NA</span></span>
+<span id="cb4-123"><a href="#cb4-123"></a><span class="co">#&gt; 97     35      NA  7.4   85     8   5         NA        NA</span></span>
+<span id="cb4-124"><a href="#cb4-124"></a><span class="co">#&gt; 98     66      NA  4.6   87     8   6         NA        NA</span></span>
+<span id="cb4-125"><a href="#cb4-125"></a><span class="co">#&gt; 99    122     255  4.0   89     8   7        179  91.82286</span></span>
+<span id="cb4-126"><a href="#cb4-126"></a><span class="co">#&gt; 100    89     229 10.3   90     8   8        191  66.99773</span></span>
+<span id="cb4-127"><a href="#cb4-127"></a><span class="co">#&gt; 101   110     207  8.0   90     8   9        200  75.82581</span></span>
+<span id="cb4-128"><a href="#cb4-128"></a><span class="co">#&gt; 102    NA     222  8.6   92     8  10         NA        NA</span></span>
+<span id="cb4-129"><a href="#cb4-129"></a><span class="co">#&gt; 103    NA     137 11.5   86     8  11         NA        NA</span></span>
+<span id="cb4-130"><a href="#cb4-130"></a><span class="co">#&gt; 104    44     192 11.5   86     8  12        208  56.88581</span></span>
+<span id="cb4-131"><a href="#cb4-131"></a><span class="co">#&gt; 105    28     273 11.5   82     8  13        193  38.49338</span></span>
+<span id="cb4-132"><a href="#cb4-132"></a><span class="co">#&gt; 106    65     157  9.7   80     8  14        195  30.41331</span></span>
+<span id="cb4-133"><a href="#cb4-133"></a><span class="co">#&gt; 107    NA      64 11.5   79     8  15         NA        NA</span></span>
+<span id="cb4-134"><a href="#cb4-134"></a><span class="co">#&gt; 108    22      71 10.3   77     8  16        200  21.41058</span></span>
+<span id="cb4-135"><a href="#cb4-135"></a><span class="co">#&gt; 109    59      51  6.3   79     8  17        193  37.36250</span></span>
+<span id="cb4-136"><a href="#cb4-136"></a><span class="co">#&gt; 110    23     115  7.4   76     8  18        184  29.75137</span></span>
+<span id="cb4-137"><a href="#cb4-137"></a><span class="co">#&gt; 111    31     244 10.9   78     8  19        196  34.67882</span></span>
+<span id="cb4-138"><a href="#cb4-138"></a><span class="co">#&gt; 112    44     190 10.3   78     8  20        206  34.74004</span></span>
+<span id="cb4-139"><a href="#cb4-139"></a><span class="co">#&gt; 113    21     259 15.5   77     8  21        176  25.74759</span></span>
+<span id="cb4-140"><a href="#cb4-140"></a><span class="co">#&gt; 114     9      36 14.3   72     8  22        181  16.11446</span></span>
+<span id="cb4-141"><a href="#cb4-141"></a><span class="co">#&gt; 115    NA     255 12.6   75     8  23         NA        NA</span></span>
+<span id="cb4-142"><a href="#cb4-142"></a><span class="co">#&gt; 116    45     212  9.7   79     8  24        203  56.69674</span></span>
+<span id="cb4-143"><a href="#cb4-143"></a><span class="co">#&gt; 117   168     238  3.4   81     8  25        194  67.14026</span></span>
+<span id="cb4-144"><a href="#cb4-144"></a><span class="co">#&gt; 118    73     215  8.0   86     8  26        166  85.68238</span></span>
+<span id="cb4-145"><a href="#cb4-145"></a><span class="co">#&gt; 119    NA     153  5.7   88     8  27         NA        NA</span></span>
+<span id="cb4-146"><a href="#cb4-146"></a><span class="co">#&gt; 120    76     203  9.7   97     8  28        191  74.62102</span></span>
+<span id="cb4-147"><a href="#cb4-147"></a><span class="co">#&gt; 121   118     225  2.3   94     8  29        182 104.91248</span></span>
+<span id="cb4-148"><a href="#cb4-148"></a><span class="co">#&gt; 122    84     237  6.3   96     8  30        186  90.26471</span></span>
+<span id="cb4-149"><a href="#cb4-149"></a><span class="co">#&gt; 123    85     188  6.3   94     8  31        192  81.15797</span></span>
+<span id="cb4-150"><a href="#cb4-150"></a><span class="co">#&gt; 124    96     167  6.9   91     9   1        181  72.59516</span></span>
+<span id="cb4-151"><a href="#cb4-151"></a><span class="co">#&gt; 125    78     197  5.1   92     9   2        179  81.48244</span></span>
+<span id="cb4-152"><a href="#cb4-152"></a><span class="co">#&gt; 126    73     183  2.8   93     9   3        183  93.03619</span></span>
+<span id="cb4-153"><a href="#cb4-153"></a><span class="co">#&gt; 127    91     189  4.6   93     9   4        173  77.15980</span></span>
+<span id="cb4-154"><a href="#cb4-154"></a><span class="co">#&gt; 128    47      95  7.4   87     9   5        181  52.03776</span></span>
+<span id="cb4-155"><a href="#cb4-155"></a><span class="co">#&gt; 129    32      92 15.5   84     9   6        174  37.75896</span></span>
+<span id="cb4-156"><a href="#cb4-156"></a><span class="co">#&gt; 130    20     252 10.9   80     9   7        184  40.05420</span></span>
+<span id="cb4-157"><a href="#cb4-157"></a><span class="co">#&gt; 131    23     220 10.3   78     9   8        196  35.00435</span></span>
+<span id="cb4-158"><a href="#cb4-158"></a><span class="co">#&gt; 132    21     230 10.9   75     9   9        188  28.14067</span></span>
+<span id="cb4-159"><a href="#cb4-159"></a><span class="co">#&gt; 133    24     259  9.7   73     9  10        187  28.94787</span></span>
+<span id="cb4-160"><a href="#cb4-160"></a><span class="co">#&gt; 134    44     236 14.9   81     9  11        174  29.27522</span></span>
+<span id="cb4-161"><a href="#cb4-161"></a><span class="co">#&gt; 135    21     259 15.5   76     9  12        183  22.60115</span></span>
+<span id="cb4-162"><a href="#cb4-162"></a><span class="co">#&gt; 136    28     238  6.3   77     9  13        193  46.98184</span></span>
+<span id="cb4-163"><a href="#cb4-163"></a><span class="co">#&gt; 137     9      24 10.9   71     9  14        200  16.55020</span></span>
+<span id="cb4-164"><a href="#cb4-164"></a><span class="co">#&gt; 138    13     112 11.5   71     9  15        173  21.91143</span></span>
+<span id="cb4-165"><a href="#cb4-165"></a><span class="co">#&gt; 139    46     237  6.9   78     9  16        186  33.19160</span></span>
+<span id="cb4-166"><a href="#cb4-166"></a><span class="co">#&gt; 140    18     224 13.8   67     9  17        181  22.12481</span></span>
+<span id="cb4-167"><a href="#cb4-167"></a><span class="co">#&gt; 141    13      27 10.3   76     9  18        190  16.28911</span></span>
+<span id="cb4-168"><a href="#cb4-168"></a><span class="co">#&gt; 142    24     238 10.3   68     9  19        181  22.70507</span></span>
+<span id="cb4-169"><a href="#cb4-169"></a><span class="co">#&gt; 143    16     201  8.0   82     9  20        170  43.56690</span></span>
+<span id="cb4-170"><a href="#cb4-170"></a><span class="co">#&gt; 144    13     238 12.6   64     9  21        178  22.78182</span></span>
+<span id="cb4-171"><a href="#cb4-171"></a><span class="co">#&gt; 145    23      14  9.2   71     9  22        196  15.44979</span></span>
+<span id="cb4-172"><a href="#cb4-172"></a><span class="co">#&gt; 146    36     139 10.3   81     9  23        171  25.90560</span></span>
+<span id="cb4-173"><a href="#cb4-173"></a><span class="co">#&gt; 147     7      49 10.3   69     9  24        187  20.33940</span></span>
+<span id="cb4-174"><a href="#cb4-174"></a><span class="co">#&gt; 148    14      20 16.6   63     9  25        188  21.48303</span></span>
+<span id="cb4-175"><a href="#cb4-175"></a><span class="co">#&gt; 149    30     193  6.9   70     9  26        175  36.76303</span></span>
+<span id="cb4-176"><a href="#cb4-176"></a><span class="co">#&gt; 150    NA     145 13.2   77     9  27         NA        NA</span></span>
+<span id="cb4-177"><a href="#cb4-177"></a><span class="co">#&gt; 151    14     191 14.3   75     9  28        181  25.86641</span></span>
+<span id="cb4-178"><a href="#cb4-178"></a><span class="co">#&gt; 152    18     131  8.0   76     9  29        188  32.89799</span></span>
+<span id="cb4-179"><a href="#cb4-179"></a><span class="co">#&gt; 153    20     223 11.5   68     9  30        174  34.24170</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -176,8 +362,8 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/njtierney/broomstick"><img src="https://travis-ci.org/njtierney/broomstick.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-<li><a href="https://ci.appveyor.com/project/njtierney/broomstick"><img src="https://ci.appveyor.com/api/projects/status/github/njtierney/broomstick?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
+<li><a href="https://github.com/njtierney/broomstick/actions"><img src="https://github.com/njtierney/broomstick/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://codecov.io/gh/njtierney/broomstick?branch=master"><img src="https://codecov.io/gh/njtierney/broomstick/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 </div>
