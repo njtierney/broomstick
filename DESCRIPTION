@@ -32,5 +32,6 @@ Suggests:
     testthat,
     randomForest,
     MASS,
-    rpart
+    rpart,
+    covr
 Roxygen: list(markdown = TRUE)

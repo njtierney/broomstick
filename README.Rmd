@@ -14,8 +14,10 @@ knitr::opts_chunk$set(
 
 # broomstick
 
-[![Travis-CI Build Status](https://travis-ci.org/njtierney/broomstick.svg?branch=master)](https://travis-ci.org/njtierney/broomstick)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/njtierney/broomstick?branch=master&svg=true)](https://ci.appveyor.com/project/njtierney/broomstick)
+<!-- badges: start -->
+[![R build status](https://github.com/njtierney/broomstick/workflows/R-CMD-check/badge.svg)](https://github.com/njtierney/broomstick/actions)
+[![Codecov test coverage](https://codecov.io/gh/njtierney/broomstick/branch/master/graph/badge.svg)](https://codecov.io/gh/njtierney/broomstick?branch=master)
+<!-- badges: end -->
 
 Convert decision tree objects into tidy data frames with `broomstick`.
 
@@ -58,7 +60,7 @@ tidy(fit_gbm)
 
 ## random forest
 
-```{r example-gbm}
+```{r example-rf}
 library(randomForest)
 ozone_rf <- randomForest(Ozone ~ ., 
                          data = airquality, 
