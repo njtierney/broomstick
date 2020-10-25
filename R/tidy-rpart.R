@@ -26,20 +26,18 @@ tidy.rpart <- function(x, ...){
   if (is.null(x$variable.importance) == FALSE) {
 
     x$variable.importance %>%
-      data.frame(variable = names(x$variable.importance),
-                 importance = as.vector(x$variable.importance),
-                 row.names = NULL) %>%
+      tibble::tibble(variable = names(x$variable.importance),
+                     importance = as.vector(x$variable.importance),
+                     row.names = NULL) %>%
       dplyr::select(variable,
-                    importance) %>%
-      tibble::as_tibble()
+                    importance)
 
     # if rpart_frame just contains a decision stump, make NULL datasets.
   } else {
 
-    data.frame(variable = NULL,
-               importance = NULL,
-               row.names = NULL) %>%
-      tibble::as_tibble()
+    tibble::tibble(variable = NULL,
+                  importance = NULL,
+                  row.names = NULL)
 
   } # end else
 
