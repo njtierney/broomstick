@@ -66,7 +66,7 @@ tidy.gbm <- function(x,
       imp_df$importance <- 100 * imp_df$importance/sum(imp_df$importance)
   }
 
-  return(imp_df)
+  return(tibble::as_tibble(imp_df))
 
 
 }
