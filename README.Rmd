@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![R build status](https://github.com/njtierney/broomstick/workflows/R-CMD-check/badge.svg)](https://github.com/njtierney/broomstick/actions)
 [![Codecov test coverage](https://codecov.io/gh/njtierney/broomstick/branch/master/graph/badge.svg)](https://codecov.io/gh/njtierney/broomstick?branch=master)
+[![R-CMD-check](https://github.com/njtierney/broomstick/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/njtierney/broomstick/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 Convert decision tree objects into tidy data frames with `broomstick`.
